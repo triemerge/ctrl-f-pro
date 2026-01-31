@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "CTRL+F Pro",
+  "version": "1.0.0",
+  "description": "Smart multi-tab search with word variations and live highlighting",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "src/scripts/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/scripts/content.js"],
+      "css": ["src/styles/overlay.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "commands": {
+    "toggle-search": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Open CTRL+F Pro search"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    },
+    "default_title": "CTRL+F Pro"
+  }
+}
