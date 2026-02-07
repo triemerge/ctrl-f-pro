@@ -15,7 +15,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/scripts/content.js"],
+      "js": ["src/scripts/search-engine.js", "src/scripts/content.js", "src/scripts/overlay.js"],
       "css": ["src/styles/overlay.css"],
       "run_at": "document_end"
     }
