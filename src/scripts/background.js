@@ -6,11 +6,25 @@
 // State
 let globalQuery = '';
 let globalOptions = {
-  smartMode: true,
   caseSensitive: false,
   wholeWord: false
 };
 let tabResults = new Map();
+
+// Load saved options on startup
+chrome.storage.local.get(['options'], (result) => {
+  if (result.options) {
+    globalOptions = { ...globalOptions, ...result.options };
+  }
+});
+
+/**
+ * Save options to storage
+ * @param {Object} opts - Options to save
+ */
+function saveOptions(opts) {
+  chrome.storage.local.set({ options: opts });
+}
 
 /**
  * Send message to a tab's content script
@@ -110,9 +124,9 @@ async function searchInTab(tabId, query, options, highlightOnly = false) {
       };
     }
     
-    return { tabId: tabId, counts: { total: 0, exact: 0, smart: 0 }, success: false };
+    return { tabId: tabId, counts: { total: 0 }, success: false };
   } catch (error) {
-    return { tabId: tabId, counts: { total: 0, exact: 0, smart: 0 }, success: false };
+    return { tabId: tabId, counts: { total: 0 }, success: false };
   }
 }
 
@@ -146,18 +160,14 @@ async function searchAllTabs(query, options = globalOptions) {
   await Promise.all(searchPromises);
   
   // Calculate totals
-  let totalExact = 0;
-  let totalSmart = 0;
+  let totalMatches = 0;
   
   tabResults.forEach(result => {
-    totalExact += result.counts.exact;
-    totalSmart += result.counts.smart;
+    totalMatches += result.counts.total;
   });
   
   return {
-    total: totalExact + totalSmart,
-    exact: totalExact,
-    smart: totalSmart,
+    total: totalMatches,
     tabCount: tabResults.size,
     tabs: Array.from(tabResults.values())
   };
@@ -287,6 +297,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         
       case 'setOptions':
         globalOptions = { ...globalOptions, ...message.options };
+        saveOptions(globalOptions);
         sendResponse({ success: true, options: globalOptions });
         break;
         

@@ -14,8 +14,7 @@
   --ctrlf-text-muted: #6c757d;
   --ctrlf-primary: #4a90d9;
   --ctrlf-primary-hover: #357abd;
-  --ctrlf-highlight-exact: rgba(255, 235, 59, 0.6);
-  --ctrlf-highlight-smart: rgba(255, 193, 7, 0.4);
+  --ctrlf-highlight: rgba(255, 235, 59, 0.6);
   --ctrlf-highlight-current: rgba(255, 152, 0, 0.8);
   --ctrlf-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   --ctrlf-radius: 8px;
@@ -31,14 +30,7 @@
   padding: 0 1px;
   margin: 0 -1px;
   transition: background-color 0.15s ease;
-}
-
-.ctrlf-pro-highlight-exact {
-  background-color: var(--ctrlf-highlight-exact) !important;
-}
-
-.ctrlf-pro-highlight-smart {
-  background-color: var(--ctrlf-highlight-smart) !important;
+  background-color: var(--ctrlf-highlight) !important;
 }
 
 .ctrlf-pro-highlight-current {

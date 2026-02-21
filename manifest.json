@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CTRL+F Pro",
   "version": "1.0.0",
-  "description": "Smart multi-tab search with word variations and live highlighting",
+  "description": "Search across all your browser tabs with live highlighting",
   "permissions": [
     "activeTab",
     "tabs",

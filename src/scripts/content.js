@@ -15,15 +15,12 @@
   let highlightElements = [];
   let overlayVisible = false;
   let searchOptions = {
-    smartMode: true,
     caseSensitive: false,
     wholeWord: false
   };
 
   // Constants
   const HIGHLIGHT_CLASS = 'ctrlf-pro-highlight';
-  const HIGHLIGHT_EXACT_CLASS = 'ctrlf-pro-highlight-exact';
-  const HIGHLIGHT_SMART_CLASS = 'ctrlf-pro-highlight-smart';
   const HIGHLIGHT_CURRENT_CLASS = 'ctrlf-pro-highlight-current';
   const OVERLAY_ID = 'ctrlf-pro-overlay';
 
@@ -120,12 +117,10 @@
       regex.lastIndex = 0;
       
       while ((match = regex.exec(text)) !== null) {
-        const isExact = match[0].toLowerCase() === query.toLowerCase();
         matches.push({
           index: match.index,
           length: match[0].length,
-          text: match[0],
-          isExact: isExact
+          text: match[0]
         });
         
         if (match.index === regex.lastIndex) {
@@ -147,7 +142,7 @@
 
         // Create highlight span
         const span = document.createElement('span');
-        span.className = `${HIGHLIGHT_CLASS} ${m.isExact ? HIGHLIGHT_EXACT_CLASS : HIGHLIGHT_SMART_CLASS}`;
+        span.className = HIGHLIGHT_CLASS;
         span.textContent = m.text;
         span.dataset.matchIndex = matchCount;
         
@@ -156,7 +151,6 @@
         
         currentMatches.push({
           element: span,
-          isExact: m.isExact,
           text: m.text
         });
 
@@ -253,8 +247,6 @@
   function getMatchCounts() {
     return {
       total: currentMatches.length,
-      exact: currentMatches.filter(m => m.isExact).length,
-      smart: currentMatches.filter(m => !m.isExact).length,
       current: currentIndex + 1
     };
   }
@@ -267,14 +259,12 @@
    */
   function countMatchesOnly(query, options = searchOptions) {
     if (!query || query.trim().length === 0) {
-      return { total: 0, exact: 0, smart: 0 };
+      return { total: 0 };
     }
 
     const textNodes = getTextNodes();
     const regex = SearchEngine.buildRegex(query, options);
     let total = 0;
-    let exact = 0;
-    let smart = 0;
 
     textNodes.forEach(textNode => {
       const text = textNode.textContent;
@@ -284,11 +274,6 @@
       
       while ((match = regex.exec(text)) !== null) {
         total++;
-        if (match[0].toLowerCase() === query.toLowerCase()) {
-          exact++;
-        } else {
-          smart++;
-        }
         
         if (match.index === regex.lastIndex) {
           regex.lastIndex++;
@@ -296,7 +281,7 @@
       }
     });
 
-    return { total, exact, smart };
+    return { total };
   }
 
   /**

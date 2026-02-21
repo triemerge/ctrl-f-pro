@@ -17,7 +17,6 @@
   
   // Options
   let options = {
-    smartMode: true,
     caseSensitive: false,
     wholeWord: false
   };
@@ -58,7 +57,6 @@
           <button class="ctrlf-pro-btn ctrlf-pro-btn-next" title="Next (Enter)">${Icons.chevronDown}</button>
         </div>
         <div class="ctrlf-pro-divider"></div>
-        <button class="ctrlf-pro-btn ctrlf-pro-btn-toggle ctrlf-pro-btn-smart active" title="Smart search (word variations)">Aa+</button>
         <button class="ctrlf-pro-btn ctrlf-pro-btn-expand" title="Search all tabs">${Icons.tab}</button>
         <button class="ctrlf-pro-btn ctrlf-pro-btn-settings" title="Settings">${Icons.settings}</button>
         <button class="ctrlf-pro-btn ctrlf-pro-btn-close" title="Close (Esc)">${Icons.close}</button>
@@ -79,13 +77,6 @@
       <!-- Settings Panel -->
       <div class="ctrlf-pro-settings">
         <div class="ctrlf-pro-settings-content">
-          <div class="ctrlf-pro-setting-row">
-            <span class="ctrlf-pro-setting-label">Smart search (word variations)</span>
-            <label class="ctrlf-pro-toggle">
-              <input type="checkbox" id="ctrlf-setting-smart" checked />
-              <span class="ctrlf-pro-toggle-slider"></span>
-            </label>
-          </div>
           <div class="ctrlf-pro-setting-row">
             <span class="ctrlf-pro-setting-label">Case sensitive</span>
             <label class="ctrlf-pro-toggle">
@@ -117,7 +108,6 @@
     const input = overlay.querySelector('.ctrlf-pro-input');
     const btnPrev = overlay.querySelector('.ctrlf-pro-btn-prev');
     const btnNext = overlay.querySelector('.ctrlf-pro-btn-next');
-    const btnSmart = overlay.querySelector('.ctrlf-pro-btn-smart');
     const btnExpand = overlay.querySelector('.ctrlf-pro-btn-expand');
     const btnSettings = overlay.querySelector('.ctrlf-pro-btn-settings');
     const btnClose = overlay.querySelector('.ctrlf-pro-btn-close');
@@ -152,14 +142,6 @@
     btnPrev.addEventListener('click', navigatePrevious);
     btnNext.addEventListener('click', navigateNext);
 
-    // Smart mode toggle
-    btnSmart.addEventListener('click', () => {
-      options.smartMode = !options.smartMode;
-      btnSmart.classList.toggle('active', options.smartMode);
-      updateSettings();
-      performSearch(input.value);
-    });
-
     // Expand multi-tab dropdown
     btnExpand.addEventListener('click', () => {
       isExpanded = !isExpanded;
@@ -189,13 +171,6 @@
     });
 
     // Settings toggles
-    overlay.querySelector('#ctrlf-setting-smart').addEventListener('change', (e) => {
-      options.smartMode = e.target.checked;
-      btnSmart.classList.toggle('active', options.smartMode);
-      updateSettings();
-      performSearch(input.value);
-    });
-
     overlay.querySelector('#ctrlf-setting-case').addEventListener('change', (e) => {
       options.caseSensitive = e.target.checked;
       updateSettings();
