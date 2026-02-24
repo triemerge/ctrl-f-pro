@@ -1,5 +1,5 @@
 /**
- * CTRL+F Pro - UI Overlay
+ * CTRL+F Pro UI Overlay
  * Creates and manages the floating search bar interface
  */
 
@@ -142,7 +142,7 @@
     btnPrev.addEventListener('click', navigatePrevious);
     btnNext.addEventListener('click', navigateNext);
 
-    // Expand multi-tab dropdown
+    // Expand multi tab dropdown
     btnExpand.addEventListener('click', () => {
       isExpanded = !isExpanded;
       dropdown.classList.toggle('expanded', isExpanded);

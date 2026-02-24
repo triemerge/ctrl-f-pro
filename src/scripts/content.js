@@ -1,5 +1,5 @@
 /**
- * CTRL+F Pro - Content Script
+ * CTRL+F Pro Content Script
  * Handles DOM scanning, highlighting, and navigation
  */
 
@@ -93,9 +93,9 @@
 
   /**
    * Highlight matches in the DOM
-   * @param {string} query - Search query
-   * @param {Object} options - Search options
-   * @returns {number} - Number of matches found
+   * @param {string} query  Search query
+   * @param {Object} options  Search options
+   * @returns {number}  Number of matches found
    */
   function highlightMatches(query, options = searchOptions) {
     clearHighlights();
@@ -105,28 +105,11 @@
     }
 
     const textNodes = getTextNodes();
-    const regex = SearchEngine.buildRegex(query, options);
     let matchCount = 0;
 
     textNodes.forEach(textNode => {
       const text = textNode.textContent;
-      const matches = [];
-      let match;
-      
-      // Reset regex
-      regex.lastIndex = 0;
-      
-      while ((match = regex.exec(text)) !== null) {
-        matches.push({
-          index: match.index,
-          length: match[0].length,
-          text: match[0]
-        });
-        
-        if (match.index === regex.lastIndex) {
-          regex.lastIndex++;
-        }
-      }
+      const matches = SearchEngine.findMatches(text, query, options);
 
       if (matches.length === 0) return;
 
@@ -230,7 +213,7 @@
 
   /**
    * Go to specific match by index
-   * @param {number} index - Match index
+   * @param {number} index  Match index
    */
   function goToMatch(index) {
     if (index < 0 || index >= currentMatches.length) return;
@@ -242,7 +225,7 @@
 
   /**
    * Get match counts
-   * @returns {Object} - Count object
+   * @returns {Object}  Count object
    */
   function getMatchCounts() {
     return {
@@ -253,9 +236,9 @@
 
   /**
    * Count matches without highlighting (for multi-tab preview)
-   * @param {string} query - Search query
-   * @param {Object} options - Search options
-   * @returns {Object} - Count object
+   * @param {string} query  Search query
+   * @param {Object} options  Search options
+   * @returns {Object}  Count object
    */
   function countMatchesOnly(query, options = searchOptions) {
     if (!query || query.trim().length === 0) {
@@ -263,22 +246,11 @@
     }
 
     const textNodes = getTextNodes();
-    const regex = SearchEngine.buildRegex(query, options);
     let total = 0;
 
     textNodes.forEach(textNode => {
       const text = textNode.textContent;
-      let match;
-      
-      regex.lastIndex = 0;
-      
-      while ((match = regex.exec(text)) !== null) {
-        total++;
-        
-        if (match.index === regex.lastIndex) {
-          regex.lastIndex++;
-        }
-      }
+      total += SearchEngine.findMatches(text, query, options).length;
     });
 
     return { total };
@@ -286,7 +258,7 @@
 
   /**
    * Update search options
-   * @param {Object} newOptions - New options
+   * @param {Object} newOptions  New options
    */
   function setOptions(newOptions) {
     searchOptions = { ...searchOptions, ...newOptions };

@@ -1,6 +1,6 @@
 /**
- * CTRL+F Pro - Background Service Worker
- * Handles multi-tab communication and coordination
+ * CTRL+F Pro Background Service Worker
+ * Handles multi tab communication and coordination
  */
 
 // State
@@ -20,7 +20,7 @@ chrome.storage.local.get(['options'], (result) => {
 
 /**
  * Save options to storage
- * @param {Object} opts - Options to save
+ * @param {Object} opts  Options to save
  */
 function saveOptions(opts) {
   chrome.storage.local.set({ options: opts });
@@ -28,9 +28,9 @@ function saveOptions(opts) {
 
 /**
  * Send message to a tab's content script
- * @param {number} tabId - Tab ID
- * @param {Object} message - Message to send
- * @returns {Promise} - Response promise
+ * @param {number} tabId  Tab ID
+ * @param {Object} message  Message to send
+ * @returns {Promise}  Response promise
  */
 async function sendToTab(tabId, message) {
   try {
@@ -44,7 +44,7 @@ async function sendToTab(tabId, message) {
 
 /**
  * Get all searchable tabs
- * @returns {Promise<chrome.tabs.Tab[]>} - Array of tabs
+ * @returns {Promise<chrome.tabs.Tab[]>}  Array of tabs
  */
 async function getSearchableTabs() {
   const tabs = await chrome.tabs.query({});
@@ -71,7 +71,7 @@ async function getSearchableTabs() {
 
 /**
  * Inject content script into a tab if not already present
- * @param {number} tabId - Tab ID
+ * @param {number} tabId  Tab ID
  */
 async function ensureContentScript(tabId) {
   try {
@@ -99,11 +99,11 @@ async function ensureContentScript(tabId) {
 
 /**
  * Search in a specific tab
- * @param {number} tabId - Tab ID
- * @param {string} query - Search query
- * @param {Object} options - Search options
- * @param {boolean} highlightOnly - Whether to highlight or just count
- * @returns {Promise<Object>} - Search result
+ * @param {number} tabId  Tab ID
+ * @param {string} query  Search query
+ * @param {Object} options  Search options
+ * @param {boolean} highlightOnly  Whether to highlight or just count
+ * @returns {Promise<Object>}  Search result
  */
 async function searchInTab(tabId, query, options, highlightOnly = false) {
   try {
@@ -132,9 +132,9 @@ async function searchInTab(tabId, query, options, highlightOnly = false) {
 
 /**
  * Search across all tabs
- * @param {string} query - Search query
- * @param {Object} options - Search options
- * @returns {Promise<Object>} - Aggregated results
+ * @param {string} query  Search query
+ * @param {Object} options  Search options
+ * @returns {Promise<Object>}  Aggregated results
  */
 async function searchAllTabs(query, options = globalOptions) {
   const tabs = await getSearchableTabs();
@@ -175,8 +175,8 @@ async function searchAllTabs(query, options = globalOptions) {
 
 /**
  * Highlight matches in the active tab
- * @param {string} query - Search query
- * @param {Object} options - Search options
+ * @param {string} query  Search query
+ * @param {Object} options  Search options
  */
 async function highlightActiveTab(query, options = globalOptions) {
   const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -191,7 +191,7 @@ async function highlightActiveTab(query, options = globalOptions) {
 
 /**
  * Navigate to next/previous match in active tab
- * @param {string} direction - 'next' or 'previous'
+ * @param {string} direction  'next' or 'previous'
  */
 async function navigateMatch(direction) {
   const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -218,7 +218,7 @@ async function clearActiveTab() {
 
 /**
  * Switch to a tab and highlight matches
- * @param {number} tabId - Tab ID to switch to
+ * @param {number} tabId  Tab ID to switch to
  */
 async function switchToTabAndHighlight(tabId) {
   try {
