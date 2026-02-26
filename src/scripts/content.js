@@ -105,11 +105,13 @@
     }
 
     const textNodes = getTextNodes();
+    const state = SearchEngine.prepare(query, options);
+    if (!state) return 0;
     let matchCount = 0;
 
     textNodes.forEach(textNode => {
       const text = textNode.textContent;
-      const matches = SearchEngine.findMatches(text, query, options);
+      const matches = SearchEngine.scan(text, state);
 
       if (matches.length === 0) return;
 
@@ -246,11 +248,13 @@
     }
 
     const textNodes = getTextNodes();
+    const state = SearchEngine.prepare(query, options);
+    if (!state) return { total: 0 };
     let total = 0;
 
     textNodes.forEach(textNode => {
       const text = textNode.textContent;
-      total += SearchEngine.findMatches(text, query, options).length;
+      total += SearchEngine.scan(text, state).length;
     });
 
     return { total };
