@@ -1,35 +1,37 @@
 # CTRL+F Pro
 
-A minimalist Chrome extension that enhances the native CTRL+F experience with smart word matching and multi-tab search capabilities.
+Search across all your browser tabs at once. Uses the KMP algorithm for text matching.
 
 ## Features
 
-- **Smart Search**: Finds exact words and variations (fail → failed, failing, failure)
-- **Live Highlighting**: Soft yellow for exact matches, targeted highlighting for smart matches
-- **Multi-Tab Search**: Search across all open tabs simultaneously
-- **Keyboard First**: Full keyboard navigation support
-- **Minimal UI**: Floating search bar that stays out of your way
+- Search all open tabs from one search bar
+- Live highlighting as you type
+- Navigate between matches with keyboard
+- Click a result to jump to that tab
 
-## Installation
+## How It Works
 
-1. Clone this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" (top right)
-4. Click "Load unpacked" and select the `ctrl-f-pro` folder
+Uses KMP (Knuth-Morris-Pratt) instead of built-in regex.
 
-## Keyboard Shortcuts
+1. **Precompute**: Build the LPS failure table once for the pattern in O(m).
+2. **Scan**: Reuse the table to scan every text node across all tabs in O(n) each.
+3. **Total**: O(m + N) where m = pattern length, N = combined text of all tabs.
 
-- `Ctrl+Shift+F` - Open search bar
-- `Enter` - Next match
-- `Shift+Enter` - Previous match
-- `Escape` - Close search
+## Install
 
-## Usage
+1. Download this folder
+2. Go to `chrome://extensions/`
+3. Enable **Developer mode**
+4. Click **Load unpacked** and select the folder
 
-1. Press `Ctrl+Shift+F` to open the search bar
-2. Type your search query
-3. Use toggle buttons to switch between Exact/Smart mode
-4. Click the expand button to see results across all tabs
+## Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Ctrl+Shift+F` | Open search |
+| `Enter` | Next match |
+| `Shift+Enter` | Previous match |
+| `Esc` | Close |
 
 ## License
 
